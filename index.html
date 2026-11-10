@@ -1,0 +1,277 @@
+<!doctype html>
+<!-- Nic's show poster: the page is Nic's own lying advert, and Gus stamps BUSTED on each lie as it scrolls in.
+Theme B Showtime tokens only; animate transform and opacity only; glows are box-shadow and gradients, no filters. -->
+<html lang="en" data-theme="b">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#170a24">
+<title>Evict Nic: tonight, live in your head</title>
+<meta name="description" content="A story game for smokers and vapers. Nic is a parasite who lives in your head and sells you lies. Catch them, case by case, and evict him. Play case 1 free in your browser.">
+<link rel="icon" type="image/png" sizes="48x48" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bowlby+One&family=Bungee&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #170a24; --ink: #fff0fb; --muted: #c9a6d6; --accent: #ff4fd8; --gold: #ffd166; --gold-ink: #2a1a00; --rim: #c04dff;
+  --floor1: #231036; --floor2: #090312; --shade: 23, 10, 36;
+  --plum: #3a1152; --plum-deep: #24092f; --pink: #ff7a9c; --nic: #ffb347; --bust: #ff3d5a; --paper: #fff3d6; --paper-ink: #2a1a2e;
+  --display: 'Bowlby One', system-ui, sans-serif; --sign: 'Bungee', system-ui, sans-serif; --body: 'Atkinson Hyperlegible', system-ui, sans-serif;
+}
+* { box-sizing: border-box; margin: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--ink); font: 17px/1.5 var(--body); overflow-x: hidden; }
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; }
+button, input { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+.wrap { width: min(100% - 40px, 1100px); margin: 0 auto; }
+
+/* ── top bar + the running marquee ribbon ── */
+.bar { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; height: 60px; padding: 0 20px; background: rgba(var(--shade), .88); }
+.brand { display: inline-flex; align-items: center; min-height: 44px; font: 24px/1 var(--display); text-decoration: none; }
+.brand span { color: var(--accent); margin-left: .28em; }
+.neon { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 16px; border-radius: 10px; font: 15px/1 var(--sign); color: var(--accent); text-decoration: none; background: rgba(var(--shade), .7); box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--accent) 60%, transparent); transition: transform .12s; }
+.neon:active { transform: scale(.95); }
+.gold { display: inline-flex; align-items: center; justify-content: center; min-height: 54px; padding: 0 26px; border-radius: 14px; background: var(--gold); color: var(--gold-ink); font: 18px/1 var(--sign); text-decoration: none; border: 0; cursor: pointer; box-shadow: 0 6px 0 #b8860b, 0 10px 30px rgba(255, 209, 102, .25); transition: transform .1s; }
+.gold:active { transform: translateY(4px); }
+.gold:focus-visible { outline-color: var(--gold); }
+.ribbon { overflow: hidden; height: 38px; background: var(--gold); color: var(--gold-ink); font: 14px/38px var(--sign); letter-spacing: .06em; white-space: nowrap; }
+.ribbon .track { display: inline-flex; will-change: transform; animation: slide 26s linear infinite; }
+.ribbon span { padding: 0 18px; }
+@keyframes slide { to { transform: translateX(-50%); } }
+
+/* ── the poster: Nic on stage under a hanging sign ── */
+.stage { position: relative; height: 460px; overflow: hidden; background: var(--floor2); }
+.stage .bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 100%; }
+.spot { position: absolute; left: 50%; bottom: 20px; width: 360px; height: 440px; margin-left: -180px; background: linear-gradient(rgba(255, 236, 170, 0), rgba(255, 236, 170, .22) 70%, rgba(255, 236, 170, .32)); clip-path: polygon(44% 0, 56% 0, 100% 100%, 0 100%); animation: flicker 5s steps(1) infinite; }
+@keyframes flicker { 0%, 100% { opacity: 1; } 47% { opacity: .85; } 49% { opacity: 1; } 71% { opacity: .9; } 72% { opacity: 1; } }
+.hang { position: absolute; left: 50%; top: -6px; width: 300px; margin-left: -150px; transform-origin: 50% 0; will-change: transform; animation: swing 7s ease-in-out infinite; }
+@keyframes swing { 50% { transform: rotate(1.6deg); } }
+.hang .copy { position: absolute; left: 10%; right: 10%; top: 40%; bottom: 13%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; line-height: 1; }
+.hang .copy .tonight { font: 13px/1 var(--sign); color: var(--gold); letter-spacing: .14em; }
+.hang .copy h1 { font: 40px/1 var(--display); font-weight: 400; color: var(--nic); margin: 3px 0 4px; letter-spacing: .02em; text-shadow: 0 3px 0 #5a1b00; }
+.hang .copy .live { font: 14px/1 var(--sign); color: var(--pink); letter-spacing: .06em; }
+.nic { position: absolute; left: 50%; bottom: 56px; width: 172px; margin-left: -86px; transform-origin: 50% 100%; will-change: transform; animation: sway 4.2s ease-in-out infinite; }
+@keyframes sway { 50% { transform: rotate(-1.2deg) translateY(-1.5%); } }
+.boast { display: none; position: absolute; left: 20px; right: 20px; bottom: 96px; text-align: center; font: italic 16px/1.4 var(--body); color: #ffd9c2; }
+.boast cite { font: 13px/1.3 var(--sign); font-style: normal; color: var(--nic); display: block; margin-top: 4px; letter-spacing: .06em; }
+.stage .bulbs { position: absolute; left: 0; right: 0; height: 10px; z-index: 2; }
+.stage .bulbs.t { top: 0; } .stage .bulbs.b { bottom: 0; }
+
+/* chasing bulbs: three staggered gradient layers, opacity only */
+.bulbs { background: radial-gradient(circle at 5px 5px, #3a2a1a 0 3.5px, transparent 4px) 0 0 / 20px 10px repeat-x; }
+.bulbs i { position: absolute; inset: 0; display: block; background: radial-gradient(circle at 5px 5px, #fff3b0 0 3.5px, rgba(255, 243, 176, .3) 5px, transparent 6px) 0 0 / 60px 10px repeat-x; animation: chase 1.05s linear infinite; }
+.bulbs i:nth-child(2) { background-position-x: 20px; animation-delay: -.35s; }
+.bulbs i:nth-child(3) { background-position-x: 40px; animation-delay: -.7s; }
+@keyframes chase { 0%, 30% { opacity: 1; } 45%, 100% { opacity: .22; } }
+
+/* Gus's note, stuck over the poster's bottom edge */
+.note { position: relative; z-index: 3; width: min(100% - 32px, 560px); margin: -44px auto 0; padding: 22px 22px 24px; border-radius: 6px; background: var(--paper); color: var(--paper-ink); transform: rotate(-1.4deg); box-shadow: 0 14px 40px rgba(0, 0, 0, .5); }
+.note::before { content: ""; position: absolute; left: 50%; top: -12px; width: 92px; height: 26px; margin-left: -46px; background: rgba(255, 79, 216, .55); transform: rotate(2deg); }
+.note .from { font: 13px/1.3 var(--sign); color: #7a2a8a; letter-spacing: .08em; margin-bottom: 8px; }
+.note h2 { font: 28px/1.1 var(--display); font-weight: 400; margin-bottom: 10px; }
+.note p { font-size: 17px; margin-bottom: 14px; }
+.note p b { color: #7a2a8a; }
+.note .cta { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 12px; }
+.note .neon { color: #7a2a8a; background: transparent; box-shadow: inset 0 0 0 2px #7a2a8a; }
+.note .fine { font-size: 14px; color: #5b4a60; margin: 0; }
+.note .gusface { position: absolute; right: 4px; top: -58px; width: 84px; transform: rotate(8deg); }
+.note .from { padding-right: 84px; }
+/* Gus's face hangs about 50 px into the note: the heading's first line keeps clear of it too */
+.note h2 { padding-right: 72px; text-wrap: balance; }
+
+/* ── sections and marquee headers ── */
+section { padding: 60px 0; }
+.marq { position: relative; display: inline-flex; align-items: center; justify-content: center; min-height: 64px; padding: 22px 34px; border-radius: 10px; font: 22px/1.15 var(--sign); font-weight: 400; letter-spacing: .03em; text-align: center; color: var(--pink); background: var(--plum); box-shadow: inset 0 0 0 4px var(--gold), 0 0 0 1px #000, 0 0 30px 4px rgba(255, 209, 102, .3); text-shadow: 0 0 10px rgba(255, 122, 156, .9); }
+.marq .bulbs { position: absolute; left: 10px; right: 10px; height: 10px; }
+.marq .bulbs.t { top: 6px; } .marq .bulbs.b { bottom: 6px; }
+.head { text-align: center; margin-bottom: 26px; }
+.lead { text-align: center; color: var(--muted); font-size: 18px; max-width: 36em; margin: 0 auto 30px; }
+
+/* ── the programme: showbills that get stamped ── */
+.bills { display: grid; gap: 84px; margin-top: 76px; }
+.bill { position: relative; padding: 22px 22px 0; border-radius: 12px; background: var(--plum); box-shadow: inset 0 0 0 4px var(--gold), 0 0 0 1px #000; overflow: visible; }
+.bill .act { font: 13px/1.3 var(--sign); color: var(--gold); letter-spacing: .12em; }
+.bill h3 { font: 26px/1.1 var(--display); font-weight: 400; color: var(--nic); margin: 6px 0 12px; padding-right: 140px; }
+.bill blockquote p { font: 700 20px/1.35 var(--body); color: #ffd9c2; }
+.bill blockquote p::before { content: open-quote; } .bill blockquote p::after { content: close-quote; }
+.bill blockquote cite { display: block; font: 13px/1.3 var(--sign); font-style: normal; color: var(--nic); margin-top: 6px; letter-spacing: .06em; }
+.bill .hype { font: italic 15px/1.4 var(--body); color: var(--muted); margin: 12px 0 18px; }
+.stamp { position: absolute; right: 12px; top: 10px; padding: 8px 12px 6px; border: 5px solid var(--bust); border-radius: 8px; color: var(--bust); font: 30px/1 var(--sign); letter-spacing: .04em; transform: rotate(-12deg); opacity: 0; box-shadow: inset 0 0 0 2px var(--plum), inset 0 0 0 4px var(--bust); will-change: transform, opacity; pointer-events: none; }
+.bill.in .stamp { animation: slam .5s cubic-bezier(.2, .9, .3, 1.25) .15s both; }
+@keyframes slam { 0% { opacity: 0; transform: rotate(-12deg) scale(3.2); } 55% { opacity: 1; transform: rotate(-12deg) scale(.9); } 100% { opacity: 1; transform: rotate(-12deg) scale(1); } }
+.bill .peek { position: absolute; right: 10px; bottom: 100%; width: 92px; height: 66px; margin-bottom: -4px; overflow: hidden; pointer-events: none; }
+.bill .gus { width: 92px; transform: translateY(100%); transition: transform .55s cubic-bezier(.2, .9, .3, 1.2) .5s; will-change: transform; }
+.bill.in .gus { transform: none; }
+.bill .truth { margin: 0 -4px -4px; padding: 14px 18px 16px; border-radius: 6px 6px 10px 10px; background: var(--paper); color: var(--paper-ink); transform: translateY(14px); opacity: 0; transition: transform .45s cubic-bezier(.2, .8, .2, 1) .7s, opacity .3s .7s; }
+.bill.in .truth { transform: none; opacity: 1; }
+.bill .truth b { display: block; font: 13px/1.3 var(--sign); font-weight: 400; color: #7a2a8a; letter-spacing: .08em; margin-bottom: 4px; }
+.bill .truth p { font-size: 16px; }
+.late { text-align: center; color: var(--muted); font-size: 16px; margin-top: 24px; }
+
+/* ── the app: one email line ── */
+.app { padding-top: 20px; text-align: center; }
+.app p { color: var(--muted); font-size: 18px; max-width: 32em; margin: 0 auto; }
+.app p b { color: var(--ink); }
+.app p + p { margin-top: 12px; }
+.app .fine { font-size: 15px; }
+.app .marq { margin-bottom: 18px; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+footer { padding: 40px 0 70px; text-align: center; color: var(--muted); font-size: 15px; }
+footer .small { font: italic 14px/1.4 var(--body); margin-top: 6px; }
+footer nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 6px; margin-top: 12px; }
+footer nav a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 10px; text-decoration-color: color-mix(in srgb, var(--muted) 50%, transparent); }
+footer nav a:hover { color: var(--ink); }
+
+/* ── entrances ── */
+.js .note { opacity: 0; transform: rotate(-1.4deg) translateY(24px); transition: opacity .5s .4s, transform .6s cubic-bezier(.2, .8, .2, 1) .4s; }
+.js .note.in { opacity: 1; transform: rotate(-1.4deg); }
+.js .hang { opacity: 0; transition: opacity .5s; }
+.js .hang.in { opacity: 1; }
+.js .nic { opacity: 0; transition: opacity .5s .2s; }
+.js .nic.in { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .ribbon .track, .spot, .hang, .nic, .bulbs i { animation: none; }
+  .bill.in .stamp { animation: none; opacity: 1; }
+  .bill .gus, .bill .truth, .js .note { transform: none; transition: opacity .3s; transition-delay: 0s; }
+  .bill .gus { opacity: 1; }
+  .js .note, .js .note.in { transform: rotate(-1.4deg); }
+}
+
+/* ── desktop: the wide stage, the sign left, Gus's note on the curtain at right ── */
+@media (min-width: 900px) {
+  .bar { height: 68px; padding: 0 32px; }
+  .ribbon { font-size: 15px; }
+  .stage { height: 780px; }
+  .boast { display: block; }
+  .hang .copy h1 { font-size: 92px; }
+  .hang { left: 50%; width: 640px; margin-left: -300px; top: -10px; }
+  .hang .copy .tonight { font-size: 16px; }
+  .hang .copy h1 { margin: 6px 0 8px; }
+  .hang .copy .live { font-size: 20px; }
+  .spot { left: 6%; margin-left: -80px; width: 460px; bottom: 90px; height: 700px; }
+  .nic { left: 6%; width: 300px; margin-left: 0; bottom: 150px; }
+  .boast { left: 6%; right: auto; width: 300px; bottom: 76px; font-size: 17px; }
+  .note { position: absolute; right: 6%; top: 400px; width: 440px; margin: 0; transform: rotate(1.6deg); }
+  .js .note { transform: rotate(1.6deg) translateY(24px); } .js .note.in { transform: rotate(1.6deg); }
+
+  section { padding: 76px 0; }
+  .bills { grid-template-columns: repeat(3, 1fr); gap: 24px; align-items: start; }
+}
+</style>
+</head>
+<body>
+<header class="bar">
+  <a class="brand" href="#top">EVICT <span>NIC</span></a>
+  <a class="neon" href="#price">$7.99, once</a>
+</header>
+<div class="ribbon" aria-label="Tonight: Nic, live in your head. One night only, every night. No exit.">
+  <div class="track"><span aria-hidden="true">TONIGHT ★ NIC ★ LIVE IN YOUR HEAD ★ ONE NIGHT ONLY (EVERY NIGHT) ★ NO EXIT ★ ADULTS ONLY ★ TICKETS: YOU ALREADY PAID ★</span><span aria-hidden="true">TONIGHT ★ NIC ★ LIVE IN YOUR HEAD ★ ONE NIGHT ONLY (EVERY NIGHT) ★ NO EXIT ★ ADULTS ONLY ★ TICKETS: YOU ALREADY PAID ★</span></div>
+</div>
+
+<main id="top">
+<section class="poster" aria-labelledby="h1" style="padding:0">
+  <div class="stage">
+    <picture>
+      <source media="(min-width: 900px)" srcset="assets/stage-w.webp">
+      <img class="bg" src="assets/stage.webp" width="1024" height="1536" fetchpriority="high" alt="A small theatre stage inside a brain: red curtains, a gold arch with bulbs, a neon star and neon cherries.">
+    </picture>
+    <div class="bulbs t" aria-hidden="true"><i></i><i></i><i></i></div>
+    <div class="spot" aria-hidden="true"></div>
+    <figure class="hang">
+      <img src="assets/sign.webp" width="1456" height="868" fetchpriority="high" alt="">
+      <div class="copy"><span class="tonight">Tonight, live</span><h1 id="h1">NIC</h1><span class="live">Live in your head</span></div>
+    </figure>
+    <img class="nic" src="assets/nic-confident.webp" width="1024" height="1536" fetchpriority="high" alt="Nic, an orange slug in a purple tuxedo, grinning into a microphone at centre stage.">
+    <blockquote class="boast"><p>I'm the only thing that calms you down.</p><cite>Nic, every single night</cite></blockquote>
+    <div class="bulbs b" aria-hidden="true"><i></i><i></i><i></i></div>
+  </div>
+  <aside class="note" aria-label="A note from Gus">
+    <img class="gusface" src="assets/gus-whisper.webp" width="1024" height="1536" alt="Gus, a small pink brain in a bowler hat, whispering behind his hand.">
+    <p class="from">A note from Gus</p>
+    <h2>Don't buy it. He's lying.</h2>
+    <p><b>Evict Nic</b> is a story game for smokers and vapers: catch Nic's lies, case by case, and throw him out.</p>
+    <div class="cta"><a class="gold" href="#price">Cases 1 and 2 free</a></div>
+    <p class="fine">Opening soon in your browser, then on Android and iOS.</p>
+  </aside>
+</section>
+
+<section class="programme" aria-labelledby="h-prog">
+  <div class="wrap">
+    <div class="head"><h2 id="h-prog" class="marq"><span class="bulbs t" aria-hidden="true"><i></i><i></i><i></i></span>Tonight's programme<span class="bulbs b" aria-hidden="true"><i></i><i></i><i></i></span></h2></div>
+    <p class="lead">Three acts from the bill, in Nic's own words. Scroll, and watch what Gus does to them.</p>
+    <div class="bills">
+      <article class="bill" style="--i:0">
+        <span class="peek" aria-hidden="true"><img class="gus" src="assets/gus-pleased.webp" width="1024" height="1536" loading="lazy" alt=""></span>
+        <span class="stamp" aria-hidden="true">BUSTED</span>
+        <span class="act">Act I · Case 1</span>
+        <h3>The Relief Hour</h3>
+        <blockquote><p>I'm the only thing that calms you down.</p><cite>Nic</cite></blockquote>
+        <p class="hype">Every break. Every coffee. Encore after dinner.</p>
+        <div class="truth"><b>Gus says: busted</b><p>Smoking doesn't give you a good feeling. It ends a bad feeling it made in the first place.</p></div>
+      </article>
+      <article class="bill" style="--i:1">
+        <span class="peek" aria-hidden="true"><img class="gus" src="assets/gus-surprised.webp" width="1024" height="1536" loading="lazy" alt=""></span>
+        <span class="stamp" aria-hidden="true">BUSTED</span>
+        <span class="act">Act II · Case 3</span>
+        <h3>Serenity Hour</h3>
+        <blockquote><p>I get you through the hard days.</p><cite>Nic</cite></blockquote>
+        <p class="hype">Rough day? Nic is on call. Always.</p>
+        <div class="truth"><b>Gus says: busted</b><p>Nicotine doesn't take stress away. It adds one, then takes the credit for removing it.</p></div>
+      </article>
+      <article class="bill" style="--i:2">
+        <span class="peek" aria-hidden="true"><img class="gus" src="assets/gus-thinking.webp" width="1024" height="1536" loading="lazy" alt=""></span>
+        <span class="stamp" aria-hidden="true">BUSTED</span>
+        <span class="act">Act III · Case 9</span>
+        <h3>The Cool Corner</h3>
+        <blockquote><p>I make you interesting.</p><cite>Nic</cite></blockquote>
+        <p class="hype">The corner outside the door, in the rain. VIP.</p>
+        <div class="truth"><b>Gus says: busted</b><p>The cigarette never made the moment. The people did.</p></div>
+      </article>
+    </div>
+    <p class="late">Fifteen cases on the bill, four acts and the Last Door. Plus two late shows for vapers only.</p>
+  </div>
+</section>
+
+<section class="app" id="price" aria-labelledby="h-price">
+  <div class="wrap">
+    <h2 id="h-price" class="marq">Tickets</h2>
+    <p><b>Cases 1 and 2 are free.</b> No account needed.</p>
+    <p><b>The full show is $7.99, once.</b> One payment unlocks every case on your account, on every device you sign in to. No subscription, no ads.</p>
+    <p class="fine">Changed your mind? Write to <a href="mailto:hello@evictnic.com?subject=Refund">hello@evictnic.com</a> within 14 days of a web purchase and you get the full price back. <a href="refund.html">Refund policy</a></p>
+    <p class="fine">The doors open soon on the web, then on Android and iOS.</p>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>A Fair &amp; Square Studio game.</p>
+    <p class="small">Nic did not approve this page.</p>
+    <nav aria-label="Legal and support"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="refund.html">Refunds</a><a href="delete-account.html">Delete your account</a><a href="mailto:hello@evictnic.com">hello@evictnic.com</a></nav>
+  </div>
+</footer>
+
+<script>
+document.documentElement.classList.add('js');
+// showbills get stamped when they enter the viewport; each only once
+const io = new IntersectionObserver((entries) => {
+  for (const e of entries) {
+    if (!e.isIntersecting) continue;
+    e.target.classList.add('in');
+    io.unobserve(e.target);
+  }
+}, { rootMargin: '0px 0px -10% 0px', threshold: .25 });
+document.querySelectorAll('.bill').forEach((el) => io.observe(el));
+// the poster assembles on load: sign, Nic, then Gus's note
+requestAnimationFrame(() => document.querySelectorAll('.hang, .nic, .note').forEach((el) => el.classList.add('in')));
+
+</script>
+</body>
+</html>

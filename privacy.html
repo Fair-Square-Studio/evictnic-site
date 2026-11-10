@@ -1,0 +1,143 @@
+<!doctype html>
+<!-- One of Gus's paper notes, pinned to the dark house wall: what the game keeps about a player and why.
+Theme B Showtime tokens only; animate transform and opacity only; no scripts. -->
+<html lang="en" data-theme="b">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#170a24">
+<title>Privacy · Evict Nic</title>
+<meta name="description" content="What Evict Nic keeps about you, why, and how to delete it.">
+<link rel="icon" type="image/png" sizes="48x48" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bowlby+One&family=Bungee&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #170a24; --ink: #fff0fb; --muted: #c9a6d6; --accent: #ff4fd8; --gold: #ffd166; --gold-ink: #2a1a00; --rim: #c04dff;
+  --floor1: #231036; --floor2: #090312; --shade: 23, 10, 36;
+  --plum: #3a1152; --plum-deep: #24092f; --pink: #ff7a9c; --nic: #ffb347; --bust: #ff3d5a; --paper: #fff3d6; --paper-ink: #2a1a2e;
+  --display: 'Bowlby One', system-ui, sans-serif; --sign: 'Bungee', system-ui, sans-serif; --body: 'Atkinson Hyperlegible', system-ui, sans-serif;
+}
+* { box-sizing: border-box; margin: 0; }
+body { min-height: 100vh; display: flex; flex-direction: column; background: var(--bg); color: var(--ink); font: 17px/1.5 var(--body); overflow-x: hidden; }
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+.wrap { width: min(100% - 40px, 1100px); margin: 0 auto; }
+
+.bar { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; height: 60px; padding: 0 20px; background: rgba(var(--shade), .88); }
+.brand { display: inline-flex; align-items: center; min-height: 44px; font: 24px/1 var(--display); text-decoration: none; }
+.brand span { color: var(--accent); margin-left: .28em; }
+.neon { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 16px; border-radius: 10px; font: 15px/1 var(--sign); color: var(--accent); text-decoration: none; background: rgba(var(--shade), .7); box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--accent) 60%, transparent); transition: transform .12s; }
+.neon:active { transform: scale(.95); }
+
+/* the house wall: a dim spot on the curtain, the only thing behind the note */
+main { flex: 1; padding: 80px 0 40px; background: radial-gradient(ellipse 70% 55% at 50% 18%, var(--plum) 0, var(--floor1) 45%, var(--bg) 100%) no-repeat; }
+
+/* Gus's note, same paper as the poster's. This note is about 2000px tall on a phone, so the tilt is half the
+short note's: at .8deg the top corner and Gus's face would cross the 16px gutter and widen the page. */
+.note { --tilt: -.5deg; position: relative; width: min(100% - 32px, 560px); margin: 0 auto; padding: 22px 22px 26px; border-radius: 6px; background: var(--paper); color: var(--paper-ink); transform: rotate(var(--tilt)); box-shadow: 0 14px 40px rgba(0, 0, 0, .5); will-change: transform, opacity; animation: pin .6s cubic-bezier(.2, .8, .2, 1) both; }
+.note::before { content: ""; position: absolute; left: 50%; top: -12px; width: 92px; height: 26px; margin-left: -46px; background: rgba(255, 79, 216, .55); transform: rotate(2deg); }
+@keyframes pin { from { opacity: 0; transform: rotate(var(--tilt)) translateY(24px); } }
+.note .gusface { position: absolute; right: 4px; top: -58px; width: 84px; transform: rotate(8deg); }
+.note .from { font: 13px/1.3 var(--sign); color: #7a2a8a; letter-spacing: .08em; margin-bottom: 8px; padding-right: 84px; }
+.note h1 { font: 28px/1.1 var(--display); font-weight: 400; margin-bottom: 10px; padding-right: 60px; }
+.note h2 { font: 13px/1.3 var(--sign); font-weight: 400; color: #7a2a8a; letter-spacing: .08em; margin: 20px 0 6px; }
+.note p { font-size: 17px; margin-bottom: 14px; }
+.note p a { color: #7a2a8a; font-weight: 700; text-decoration-thickness: 2px; text-underline-offset: 2px; overflow-wrap: anywhere; }
+.note ol { padding-left: 1.6em; margin-bottom: 14px; }
+.note li { padding-left: .2em; margin-bottom: 6px; }
+.note li::marker { font: 15px/1 var(--sign); color: #7a2a8a; }
+/* unordered lists carry a purple diamond, the same ink and size as the ordered list's digits */
+.note ul { list-style: none; padding-left: 1.4em; margin-bottom: 14px; }
+.note ul li { position: relative; }
+.note ul li::before { content: ""; position: absolute; left: -1.2em; top: .55em; width: 8px; height: 8px; background: #7a2a8a; transform: rotate(45deg); }
+.note .draft { font: italic 15px/1.4 var(--body); color: #7a2a8a; margin-top: -6px; }
+.note .fine { font: italic 14px/1.4 var(--body); color: #6b5a6e; margin: 22px 0 0; }
+.note b { color: #7a2a8a; }
+.note .cta { margin-top: 14px; }
+.note .neon { color: #7a2a8a; background: transparent; box-shadow: inset 0 0 0 2px #7a2a8a; }
+
+footer { padding: 40px 0 70px; text-align: center; color: var(--muted); font-size: 15px; }
+footer .small { font: italic 14px/1.4 var(--body); margin-top: 6px; }
+footer nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 6px; margin-top: 12px; }
+footer nav a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 10px; text-decoration-color: color-mix(in srgb, var(--muted) 50%, transparent); }
+footer nav a:hover, footer nav a[aria-current] { color: var(--ink); }
+
+@media (prefers-reduced-motion: reduce) {
+  .note { animation: none; }
+}
+
+@media (min-width: 900px) {
+  .bar { height: 68px; padding: 0 32px; }
+  main { padding: 110px 0 60px; }
+  .note { --tilt: .5deg; padding: 28px 30px 32px; }
+  .note h1 { font-size: 34px; }
+}
+</style>
+</head>
+<body>
+<header class="bar">
+  <a class="brand" href="index.html">EVICT <span>NIC</span></a>
+  <a class="neon" href="index.html#price">$7.99, once</a>
+</header>
+
+<main>
+  <article class="note" aria-labelledby="h1">
+    <img class="gusface" src="assets/gus-thinking.webp" width="1024" height="1536" alt="Gus, a small pink brain in a bowler hat, thinking with a finger on his chin.">
+    <p class="from">From Gus's desk</p>
+    <h1 id="h1">Privacy</h1>
+    <p>Evict Nic is a story game. It keeps as little about you as it can, and nothing it keeps is for sale. This page says what that is.</p>
+
+    <h2>What we keep</h2>
+    <ul>
+      <li>A player id. The game makes one the first time it starts, with no name and no email. That is your account, even before you add an email.</li>
+      <li>Your progress: which cases you finished and which field-report answer you picked in each. No smoking amounts, no health data, no symptoms.</li>
+      <li>Your settings: the portrait, the track (cigarettes, vape or both), the lights.</li>
+      <li>Your email, only if you add one to keep your progress or to sign in on another device.</li>
+      <li>A record of the full-game purchase: what you bought, where (web, App Store or Google Play) and the payment reference. Never a card number: the payment provider keeps that.</li>
+      <li>Technical bits: a one-time pass when you move your progress into an account, the ids of changes the game already saved so a change sent twice counts once, and the steps you took in the game's funnel (a case finished, the offer seen) with no address and no device id.</li>
+    </ul>
+
+    <h2>What we do not keep</h2>
+    <ul>
+      <li>Nothing from your phone beyond the game: no contacts, no location, no photos, no health app data.</li>
+      <li>No advertising id, no ad network, no analytics company, no tracking across apps or sites.</li>
+    </ul>
+
+    <h2>Who gets it</h2>
+    <ul>
+      <li>Our own server keeps the game data and runs the sign-in. Resend sends the mail with your sign-in code, so it sees your email address.</li>
+      <li>On the web, Stripe sells the full game for us through its service Link. Stripe keeps your payment details and your billing country (it pays the sales tax for that country). In the stores, Apple or Google keep them.</li>
+      <li>Nobody else. We do not sell, rent or share your data.</li>
+    </ul>
+
+    <h2>How long</h2>
+    <p>As long as your account exists. Delete the account and everything above goes with it, from our server and from your device. The payment provider keeps its own record of a purchase for as long as the law asks it to.</p>
+
+    <h2>Delete it</h2>
+    <p>In the game: <b>Office</b>, then <b>Delete my account</b>, twice. Or write to <a href="mailto:hello@evictnic.com?subject=Delete%20my%20account">hello@evictnic.com</a> with the subject <b>Delete my account</b>. The <a href="delete-account.html">delete page</a> has the steps.</p>
+
+    <h2>Children</h2>
+    <p>Evict Nic is for adults who smoke or vape. It is not for anyone under 18.</p>
+
+    <h2>Changes and contact</h2>
+    <p>When this page changes, the date below changes. Questions: <a href="mailto:hello@evictnic.com">hello@evictnic.com</a>. Evict Nic is a Fair &amp; Square Studio game.</p>
+
+    <p class="fine">Last updated 10 November 2026</p>
+
+    <p class="cta"><a class="neon" href="index.html">◂ Back to the show</a></p>
+  </article>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>A Fair &amp; Square Studio game.</p>
+    <p class="small">Nic did not approve this page.</p>
+    <nav aria-label="Legal and support"><a href="privacy.html" aria-current="page">Privacy</a><a href="terms.html">Terms</a><a href="refund.html">Refunds</a><a href="delete-account.html">Delete your account</a><a href="mailto:hello@evictnic.com">hello@evictnic.com</a></nav>
+  </div>
+</footer>
+</body>
+</html>
